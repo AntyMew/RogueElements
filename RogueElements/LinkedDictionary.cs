@@ -19,6 +19,8 @@ namespace RogueElements
     {
         private readonly Dictionary<TKey, LinkedListNode<(TKey key, TValue value)>> dictionary;
         private readonly LinkedList<(TKey key, TValue value)> list;
+        private KeyCollection keys;
+        private ValueCollection values;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LinkedDictionary{TKey, TValue}"/> class that is empty and has the specified
@@ -55,16 +57,14 @@ namespace RogueElements
         /// An <see cref="ICollection{TKey}"/> of the keys in <see cref="LinkedDictionary{TKey, TValue}"/> ordered from oldest to newest
         /// added element.
         /// </value>
-        // TODO: window instead of copy
-        public ICollection<TKey> Keys => this.list.Select(x => x.key).ToList();
+        public ICollection<TKey> Keys => this.keys ?? (this.keys = new KeyCollection(this));
 
         /// <summary>
         /// Gets a collection containing the values in the <see cref="LinkedDictionary{TKey, TValue}"/> ordered from oldest to newest
         /// added element.
         /// </summary>
         /// <value>An <see cref="ICollection{TValue}"/> of the values in <see cref="LinkedDictionary{TKey, TValue}"/>.</value>
-        // TODO: window instead of copy
-        public ICollection<TValue> Values => this.list.Select(x => x.value).ToList();
+        public ICollection<TValue> Values => this.values ?? (this.values = new ValueCollection(this));
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="LinkedDictionary{TKey, TValue}"/> is read-only.
@@ -242,12 +242,7 @@ namespace RogueElements
         /// </exception>
         void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
-            if (array == null)
-                throw new ArgumentNullException(nameof(array));
-            if (arrayIndex < 0)
-                throw new ArgumentOutOfRangeException(nameof(arrayIndex));
-            if (array.Length - arrayIndex < this.list.Count)
-                throw new ArgumentException();
+            this.AssertCanCopyTo(array, arrayIndex);
 
             foreach ((TKey key, TValue value) in this.list)
                 array[arrayIndex++] = new KeyValuePair<TKey, TValue>(key, value);
@@ -259,5 +254,99 @@ namespace RogueElements
         /// <returns>An <see cref="IEnumerator"/> object that can be used to iterate through the collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
             => ((IEnumerable<KeyValuePair<TKey, TValue>>)this).GetEnumerator();
+
+        private void AssertCanCopyTo(Array array, int arrayIndex)
+        {
+            if (array == null)
+                throw new ArgumentNullException(nameof(array));
+            if (arrayIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(arrayIndex));
+            if (array.Length - arrayIndex < this.list.Count)
+                throw new ArgumentException();
+        }
+
+        private class KeyCollection : ICollection<TKey>, IReadOnlyCollection<TKey>
+        {
+            private readonly LinkedDictionary<TKey, TValue> dictionary;
+
+            public KeyCollection(LinkedDictionary<TKey, TValue> dictionary)
+            {
+                this.dictionary = dictionary;
+            }
+
+            public int Count => this.dictionary.Count;
+
+            public bool IsReadOnly => true;
+
+            public bool Contains(TKey item)
+                => this.dictionary.ContainsKey(item);
+
+            public void CopyTo(TKey[] array, int arrayIndex)
+            {
+                this.dictionary.AssertCanCopyTo(array, arrayIndex);
+
+                foreach ((TKey key, TValue value) in this.dictionary.list)
+                    array[arrayIndex++] = key;
+            }
+
+            public IEnumerator<TKey> GetEnumerator()
+            {
+                foreach ((TKey key, TValue value) in this.dictionary.list)
+                    yield return key;
+            }
+
+            void ICollection<TKey>.Add(TKey item)
+                => throw new NotSupportedException("Collection is readonly.");
+
+            bool ICollection<TKey>.Remove(TKey item)
+                => throw new NotSupportedException("Collection is readonly.");
+
+            void ICollection<TKey>.Clear()
+                => throw new NotSupportedException("Collection is readonly.");
+
+            IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+        }
+
+        private class ValueCollection : ICollection<TValue>, IReadOnlyCollection<TValue>
+        {
+            private readonly LinkedDictionary<TKey, TValue> dictionary;
+
+            public ValueCollection(LinkedDictionary<TKey, TValue> dictionary)
+            {
+                this.dictionary = dictionary;
+            }
+
+            public int Count => this.dictionary.Count;
+
+            public bool IsReadOnly => true;
+
+            public bool Contains(TValue value)
+                => this.dictionary.Select(x => x.Value).Contains(value);
+
+            public void CopyTo(TValue[] array, int arrayIndex)
+            {
+                this.dictionary.AssertCanCopyTo(array, arrayIndex);
+
+                foreach ((TKey key, TValue value) in this.dictionary.list)
+                    array[arrayIndex++] = value;
+            }
+
+            public IEnumerator<TValue> GetEnumerator()
+            {
+                foreach ((TKey key, TValue value) in this.dictionary.list)
+                    yield return value;
+            }
+
+            void ICollection<TValue>.Add(TValue item)
+                => throw new NotSupportedException("Collection is readonly.");
+
+            bool ICollection<TValue>.Remove(TValue item)
+                => throw new NotSupportedException("Collection is readonly.");
+
+            void ICollection<TValue>.Clear()
+                => throw new NotSupportedException("Collection is readonly.");
+
+            IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+        }
     }
 }
