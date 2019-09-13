@@ -27,6 +27,7 @@ namespace RogueElements
         /// initial capacity.
         /// </summary>
         /// <param name="capacity">The number of elements the new <see cref="LinkedDictionary{TKey, TValue}"/> can initially store.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> is less than 0.</exception>
         public LinkedDictionary(int capacity = 0)
         {
             this.dictionary = new Dictionary<TKey, LinkedListNode<(TKey key, TValue value)>>(capacity);
@@ -38,6 +39,7 @@ namespace RogueElements
         /// specified collection.
         /// </summary>
         /// <param name="pairs">The collection of key-value pairs to copy to the new <see cref="LinkedDictionary{TKey, TValue}"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="pairs"/> is <see langword="null"/>.</exception>
         public LinkedDictionary(IEnumerable<KeyValuePair<TKey, TValue>> pairs)
             : this(pairs.Count())
         {
@@ -60,16 +62,18 @@ namespace RogueElements
         public ICollection<TKey> Keys => this.keys ?? (this.keys = new KeyCollection(this));
 
         /// <summary>
-        /// Gets a collection containing the values in the <see cref="LinkedDictionary{TKey, TValue}"/> ordered from oldest to newest
-        /// added element.
+        /// Gets a collection containing the values in the <see cref="LinkedDictionary{TKey, TValue}"/>.
         /// </summary>
-        /// <value>An <see cref="ICollection{TValue}"/> of the values in <see cref="LinkedDictionary{TKey, TValue}"/>.</value>
+        /// <value>
+        /// An <see cref="ICollection{TValue}"/> of the values in <see cref="LinkedDictionary{TKey, TValue}"/> ordered from oldest to
+        /// newest added element.
+        /// </value>
         public ICollection<TValue> Values => this.values ?? (this.values = new ValueCollection(this));
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="LinkedDictionary{TKey, TValue}"/> is read-only.
         /// </summary>
-        /// <value>Always <see langword="true"/>.</value>
+        /// <value>Always <see langword="false"/>.</value>
         public bool IsReadOnly => false;
 
         /// <summary>
