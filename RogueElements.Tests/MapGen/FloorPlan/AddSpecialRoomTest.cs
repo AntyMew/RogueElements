@@ -309,16 +309,16 @@ namespace RogueElements.Tests
             SpawnList<Loc> spawns = pathGen.Object.GetPossiblePlacements(adjacentsByDir, mockTo.Object, mockFrom.Object);
 
             Assert.That(spawns.Count, Is.EqualTo(10));
-            Assert.That(spawns.GetSpawn(0), Is.EqualTo(new Loc(3, 3)));
-            Assert.That(spawns.GetSpawn(1), Is.EqualTo(new Loc(3, 6)));
-            Assert.That(spawns.GetSpawn(2), Is.EqualTo(new Loc(4, 3)));
-            Assert.That(spawns.GetSpawn(3), Is.EqualTo(new Loc(4, 6)));
-            Assert.That(spawns.GetSpawn(4), Is.EqualTo(new Loc(5, 3)));
-            Assert.That(spawns.GetSpawn(5), Is.EqualTo(new Loc(5, 6)));
-            Assert.That(spawns.GetSpawn(6), Is.EqualTo(new Loc(3, 4)));
-            Assert.That(spawns.GetSpawn(7), Is.EqualTo(new Loc(5, 4)));
-            Assert.That(spawns.GetSpawn(8), Is.EqualTo(new Loc(3, 5)));
-            Assert.That(spawns.GetSpawn(9), Is.EqualTo(new Loc(5, 5)));
+            Assert.That(spawns.ContainsKey(new Loc(3, 3)));
+            Assert.That(spawns.ContainsKey(new Loc(3, 6)));
+            Assert.That(spawns.ContainsKey(new Loc(4, 3)));
+            Assert.That(spawns.ContainsKey(new Loc(4, 6)));
+            Assert.That(spawns.ContainsKey(new Loc(5, 3)));
+            Assert.That(spawns.ContainsKey(new Loc(5, 6)));
+            Assert.That(spawns.ContainsKey(new Loc(3, 4)));
+            Assert.That(spawns.ContainsKey(new Loc(5, 4)));
+            Assert.That(spawns.ContainsKey(new Loc(3, 5)));
+            Assert.That(spawns.ContainsKey(new Loc(5, 5)));
         }
 
         [Test]
@@ -342,9 +342,9 @@ namespace RogueElements.Tests
             SpawnList<Loc> spawns = pathGen.Object.GetPossiblePlacements(adjacentsByDir, mockTo.Object, mockFrom.Object);
 
             Assert.That(spawns.Count, Is.EqualTo(3));
-            Assert.That(spawns.GetSpawn(0), Is.EqualTo(new Loc(3, 3)));
-            Assert.That(spawns.GetSpawn(1), Is.EqualTo(new Loc(3, 5)));
-            Assert.That(spawns.GetSpawn(2), Is.EqualTo(new Loc(3, 4)));
+            Assert.That(spawns.ContainsKey(new Loc(3, 3)));
+            Assert.That(spawns.ContainsKey(new Loc(3, 5)));
+            Assert.That(spawns.ContainsKey(new Loc(3, 4)));
         }
 
         [Test]
@@ -368,7 +368,7 @@ namespace RogueElements.Tests
             SpawnList<Loc> spawns = pathGen.Object.GetPossiblePlacements(adjacentsByDir, mockTo.Object, mockFrom.Object);
 
             Assert.That(spawns.Count, Is.EqualTo(1));
-            Assert.That(spawns.GetSpawn(0), Is.EqualTo(new Loc(3, 3)));
+            Assert.That(spawns.ContainsKey(new Loc(3, 3)));
         }
 
         [Test]
@@ -393,10 +393,10 @@ namespace RogueElements.Tests
             SpawnList<Loc> spawns = pathGen.Object.GetPossiblePlacements(adjacentsByDir, mockTo.Object, mockFrom.Object);
 
             Assert.That(spawns.Count, Is.EqualTo(4));
-            Assert.That(spawns.GetSpawn(0), Is.EqualTo(new Loc(4, 4)));
-            Assert.That(spawns.GetSpawn(1), Is.EqualTo(new Loc(4, 5)));
-            Assert.That(spawns.GetSpawn(2), Is.EqualTo(new Loc(5, 4)));
-            Assert.That(spawns.GetSpawn(3), Is.EqualTo(new Loc(5, 5)));
+            Assert.That(spawns.ContainsKey(new Loc(4, 4)));
+            Assert.That(spawns.ContainsKey(new Loc(4, 5)));
+            Assert.That(spawns.ContainsKey(new Loc(5, 4)));
+            Assert.That(spawns.ContainsKey(new Loc(5, 5)));
         }
 
         [Test]

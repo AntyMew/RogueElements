@@ -27,8 +27,7 @@ namespace RogueElements
         {
             while (spawningRooms.Count > 0 && spawns.Count > 0)
             {
-                int randIndex = spawningRooms.PickIndex(map.Rand);
-                RoomHallIndex roomIndex = spawningRooms.GetSpawn(randIndex);
+                RoomHallIndex roomIndex = spawningRooms.Pick(map.Rand);
 
                 // try to spawn the item
                 if (this.SpawnInRoom(map, roomIndex, spawns[spawns.Count - 1]))
@@ -40,17 +39,17 @@ namespace RogueElements
 
                     if (successPercent <= 0)
                     {
-                        spawningRooms.RemoveAt(randIndex);
+                        spawningRooms.Remove(roomIndex);
                     }
                     else
                     {
-                        int newRate = Math.Max(1, spawningRooms.GetSpawnRate(randIndex) * successPercent / 100);
-                        spawningRooms.SetSpawnRate(randIndex, newRate);
+                        int newRate = Math.Max(1, spawningRooms[roomIndex] * successPercent / 100);
+                        spawningRooms[roomIndex] = newRate;
                     }
                 }
                 else
                 {
-                    spawningRooms.RemoveAt(randIndex);
+                    spawningRooms.Remove(roomIndex);
                 }
             }
         }

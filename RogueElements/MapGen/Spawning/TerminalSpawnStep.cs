@@ -35,20 +35,20 @@ namespace RogueElements
             // TODO: higher likelihoods for terminals at the ends of longer paths
             for (int ii = 0; ii < map.RoomPlan.RoomCount; ii++)
             {
-                spawningRooms.Add(new RoomHallIndex(ii, false));
+                spawningRooms.Add(new RoomHallIndex(ii, false), 1);
                 List<int> adjacent = map.RoomPlan.GetAdjacentRooms(ii);
                 if (adjacent.Count == 1)
-                    terminalRooms.Add(new RoomHallIndex(ii, false));
+                    terminalRooms.Add(new RoomHallIndex(ii, false), 1);
             }
 
             if (this.IncludeHalls)
             {
                 for (int ii = 0; ii < map.RoomPlan.HallCount; ii++)
                 {
-                    spawningRooms.Add(new RoomHallIndex(ii, true));
+                    spawningRooms.Add(new RoomHallIndex(ii, true), 1);
                     List<RoomHallIndex> adjacent = map.RoomPlan.GetRoomHall(new RoomHallIndex(ii, true)).Adjacents;
                     if (adjacent.Count == 1)
-                        terminalRooms.Add(new RoomHallIndex(ii, true));
+                        terminalRooms.Add(new RoomHallIndex(ii, true), 1);
                 }
             }
 

@@ -62,24 +62,24 @@ namespace RogueElements.Tests
         }
 
         [Test]
-        [TestCase(-1, 0, 0, "", 0)]
-        [TestCase(0, 1, 0, "apple", 10)]
-        [TestCase(2, 1, 0, "apple", 10)]
-        [TestCase(3, 2, 0, "apple", 10)]
-        [TestCase(3, 2, 1, "orange", 20)]
-        [TestCase(4, 2, 0, "apple", 10)]
-        [TestCase(4, 2, 1, "orange", 20)]
-        [TestCase(5, 1, 0, "orange", 20)]
-        [TestCase(8, 1, 0, "orange", 20)]
-        [TestCase(9, 0, 0, "", 0)]
-        public void SpawnRangeListSpawnList(int level, int count, int index, string result, int rate)
+        [TestCase(-1, 0, "", 0)]
+        [TestCase(0, 1, "apple", 10)]
+        [TestCase(2, 1, "apple", 10)]
+        [TestCase(3, 2, "apple", 10)]
+        [TestCase(3, 2, "orange", 20)]
+        [TestCase(4, 2, "apple", 10)]
+        [TestCase(4, 2, "orange", 20)]
+        [TestCase(5, 1, "orange", 20)]
+        [TestCase(8, 1, "orange", 20)]
+        [TestCase(9, 0, "", 0)]
+        public void SpawnRangeListSpawnList(int level, int count, string result, int rate)
         {
-            SpawnList<string> spawnList = this.spawnRangeList.GetSpawnList(level);
-            Assert.That(spawnList.Count, Is.EqualTo(count));
+            SpawnList<string> picker = this.spawnRangeList.GetSpawnList(level);
+            Assert.That(picker.Count, Is.EqualTo(count));
             if (count > 0)
             {
-                Assert.That(spawnList.GetSpawn(index), Is.EqualTo(result));
-                Assert.That(spawnList.GetSpawnRate(index), Is.EqualTo(rate));
+                Assert.That(picker.ContainsKey(result));
+                Assert.That(picker[result], Is.EqualTo(rate));
             }
         }
 

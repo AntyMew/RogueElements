@@ -33,14 +33,14 @@ namespace RogueElements
 
             for (int ii = 0; ii < map.RoomPlan.RoomCount; ii++)
             {
-                spawningRooms.Add(new RoomHallIndex(ii, false));
+                spawningRooms.Add(new RoomHallIndex(ii, false), 1);
             }
 
             if (this.IncludeHalls)
             {
                 for (int ii = 0; ii < map.RoomPlan.HallCount; ii++)
                 {
-                    spawningRooms.Add(new RoomHallIndex(ii, true));
+                    spawningRooms.Add(new RoomHallIndex(ii, true), 1);
                 }
             }
 

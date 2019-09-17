@@ -16,41 +16,34 @@ namespace RogueElements.Tests
         public void SpawnListEmptyChoose()
         {
             // choose when empty
-            var spawnList = new SpawnList<string>();
+            var picker = new SpawnList<string>();
             Mock<IRandom> testRand = new Mock<IRandom>(MockBehavior.Strict);
-            Assert.That(spawnList.CanPick, Is.EqualTo(false));
-            Assert.Throws<InvalidOperationException>(() => { spawnList.Pick(testRand.Object); });
+            Assert.That(picker.CanPick, Is.EqualTo(false));
+            Assert.Throws<InvalidOperationException>(() => { picker.Pick(testRand.Object); });
         }
 
         [Test]
-        public void SpawnListZeroChoose()
+        public void SpawnListAddZero()
         {
             // choose when all 0's
-            SpawnList<string> spawnList = new SpawnList<string>
-            {
-                { "apple", 0 },
-                { "orange", 0 },
-            };
-            Mock<IRandom> testRand = new Mock<IRandom>(MockBehavior.Strict);
-            Assert.That(spawnList.CanPick, Is.EqualTo(false));
-            Assert.That(spawnList.SpawnTotal, Is.EqualTo(0));
-            Assert.Throws<InvalidOperationException>(() => { spawnList.PickIndex(testRand.Object); });
+            var picker = new SpawnList<string>();
+            Assert.Throws<ArgumentOutOfRangeException>(() => { picker.Add("apple", 0); });
         }
 
         [Test]
         public void SpawnListAddNegative()
         {
             // add negative
-            var spawnList = new SpawnList<string>();
-            Assert.Throws<ArgumentException>(() => { spawnList.Add("apple", -1); });
+            var picker = new SpawnList<string>();
+            Assert.Throws<ArgumentOutOfRangeException>(() => { picker.Add("apple", -1); });
         }
 
         [Test]
         public void SpawnListSetNegative()
         {
             // set negative
-            SpawnList<string> spawnList = new SpawnList<string> { { "apple", 1 } };
-            Assert.Throws<ArgumentException>(() => { spawnList.SetSpawnRate(0, -1); });
+            SpawnList<string> picker = new SpawnList<string> { { "apple", 1 } };
+            Assert.Throws<ArgumentOutOfRangeException>(() => { picker["apple"] = -1; });
         }
     }
 }

@@ -93,8 +93,7 @@ namespace RogueElements
 
             while (room_indices.Count > 0)
             {
-                int ind = room_indices.PickIndex(rand);
-                RoomHallIndex oldRoomHall = room_indices.GetSpawn(ind);
+                RoomHallIndex oldRoomHall = room_indices.Pick(rand);
                 Dictionary<Dir4, List<RoomHallIndex>> adjacentIndicesByDir = GetDirectionAdjacents(floorPlan, oldRoomHall);
                 var adjacentsByDir = new Dictionary<Dir4, List<IRoomGen>>();
                 foreach (Dir4 dir in DirExt.VALID_DIR4)
@@ -113,7 +112,7 @@ namespace RogueElements
                     return;
                 }
 
-                room_indices.RemoveAt(ind);
+                room_indices.Remove(oldRoomHall);
             }
         }
 
@@ -174,7 +173,7 @@ namespace RogueElements
         public Loc FindPlacement(IRandom rand, Dictionary<Dir4, List<IRoomGen>> adjacentsByDir, IRoomGen newGen, IRoomGen oldGen)
         {
             SpawnList<Loc> possiblePlacements = this.GetPossiblePlacements(adjacentsByDir, newGen, oldGen);
-            return possiblePlacements.SpawnTotal == 0 ? new Loc(-1) : possiblePlacements.Pick(rand);
+            return possiblePlacements.CanPick ? possiblePlacements.Pick(rand) : new Loc(-1);
         }
 
         public SpawnList<Loc> GetPossiblePlacements(Dictionary<Dir4, List<IRoomGen>> adjacentsByDir, IRoomGen newGen, IRoomGen oldGen)
@@ -217,7 +216,7 @@ namespace RogueElements
                 }
             }
 
-            if (possiblePlacements.SpawnTotal == 0)
+            if (possiblePlacements.Count == 0)
             {
                 if (oldRect.Width >= newGen.Draw.Width + 2 &&
                     oldRect.Height >= newGen.Draw.Height + 2)

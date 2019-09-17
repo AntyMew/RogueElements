@@ -27,9 +27,13 @@ namespace RogueElements.Tests
             var nodes = ConnectTestStep.GetPossibleExpansions(floorPlan, candList);
 
             Assert.That(nodes.Count, Is.EqualTo(1));
-            Assert.That(nodes.GetSpawn(0).From, Is.EqualTo(new RoomHallIndex(0, false)));
-            Assert.That(nodes.GetSpawn(0).To, Is.EqualTo(new RoomHallIndex(1, false)));
-            Assert.That(nodes.GetSpawn(0).Connector, Is.EqualTo(new Rect(3, 5, 2, 4)));
+            var expected = new ConnectStep<IFloorPlanTestContext>.ListPathTraversalNode
+            {
+                From = new RoomHallIndex(0, false),
+                To = new RoomHallIndex(1, false),
+                Connector = new Rect(3, 5, 2, 4),
+            };
+            Assert.That(nodes.ContainsKey(expected));
         }
 
         [Test]
@@ -77,14 +81,25 @@ namespace RogueElements.Tests
             var nodes = ConnectTestStep.GetPossibleExpansions(floorPlan, candList);
 
             Assert.That(nodes.Count, Is.EqualTo(2));
-            Assert.That(nodes.GetSpawnRate(0), Is.EqualTo(6));
-            Assert.That(nodes.GetSpawn(0).From, Is.EqualTo(new RoomHallIndex(0, false)));
-            Assert.That(nodes.GetSpawn(0).To, Is.EqualTo(new RoomHallIndex(5, false)));
-            Assert.That(nodes.GetSpawn(0).Connector, Is.EqualTo(new Rect(5, 1, 2, 2)));
-            Assert.That(nodes.GetSpawnRate(1), Is.EqualTo(4));
-            Assert.That(nodes.GetSpawn(1).From, Is.EqualTo(new RoomHallIndex(1, false)));
-            Assert.That(nodes.GetSpawn(1).To, Is.EqualTo(new RoomHallIndex(4, false)));
-            Assert.That(nodes.GetSpawn(1).Connector, Is.EqualTo(new Rect(5, 3, 2, 2)));
+            var expected = new ConnectStep<IFloorPlanTestContext>.ListPathTraversalNode[2]
+            {
+                new ConnectStep<IFloorPlanTestContext>.ListPathTraversalNode
+                {
+                    From = new RoomHallIndex(0, false),
+                    To = new RoomHallIndex(5, false),
+                    Connector = new Rect(5, 1, 2, 2),
+                },
+                new ConnectStep<IFloorPlanTestContext>.ListPathTraversalNode
+                {
+                    From = new RoomHallIndex(1, false),
+                    To = new RoomHallIndex(4, false),
+                    Connector = new Rect(5, 3, 2, 2),
+                },
+            };
+            Assert.That(nodes.ContainsKey(expected[0]));
+            Assert.That(nodes[expected[0]], Is.EqualTo(6));
+            Assert.That(nodes.ContainsKey(expected[1]));
+            Assert.That(nodes[expected[1]], Is.EqualTo(4));
         }
 
         [Test]
