@@ -124,11 +124,11 @@ namespace RogueElements
                 return null;
         }
 
-        protected static SpawnList<ListPathTraversalNode> GetPossibleExpansions(FloorPlan floorPlan, List<RoomHallIndex> candList)
+        protected static RandWeighted<ListPathTraversalNode> GetPossibleExpansions(FloorPlan floorPlan, List<RoomHallIndex> candList)
         {
             // get all probabilities.
             // the probability of an extension is the distance that the target room is from the start room, in rooms
-            var expansions = new SpawnList<ListPathTraversalNode>();
+            var expansions = new RandWeighted<ListPathTraversalNode>();
 
             for (int nn = 0; nn < candList.Count; nn++)
             {
@@ -173,7 +173,7 @@ namespace RogueElements
 
         protected static ListPathTraversalNode? ChooseConnection(IRandom rand, FloorPlan floorPlan, List<RoomHallIndex> candList)
         {
-            SpawnList<ListPathTraversalNode> expansions = GetPossibleExpansions(floorPlan, candList);
+            RandWeighted<ListPathTraversalNode> expansions = GetPossibleExpansions(floorPlan, candList);
 
             if (expansions.Count > 0)
                 return expansions.Pick(rand);

@@ -41,7 +41,7 @@ namespace RogueElements.Tests
         }
 
         [Test]
-        [Ignore("TODO: Broken by SpawnList changes")]
+        [Ignore("TODO: Broken by RandWeighted changes")]
         public void ChooseRoomExpansionAlone()
         {
             // choose from a single room, add a room
@@ -79,7 +79,7 @@ namespace RogueElements.Tests
         }
 
         [Test]
-        [Ignore("TODO: Broken by SpawnList changes")]
+        [Ignore("TODO: Broken by RandWeighted changes")]
         public void ChooseRoomExpansionAloneHall()
         {
             // choose from a single room, add a hall and a room
@@ -332,7 +332,7 @@ namespace RogueElements.Tests
             var gen = new TestFloorPlanGen('B');
             gen.PrepareDraw(new Rect(0, 0, 3, 2));
 
-            SpawnList<Loc> possiblePlacements = new SpawnList<Loc>();
+            RandWeighted<Loc> possiblePlacements = new RandWeighted<Loc>();
 
             FloorPathTestBranch.AddLegalPlacements(possiblePlacements, floorPlan, new RoomHallIndex(0, false), floorPlan.GetRoom(0), gen, expandTo);
 
@@ -427,7 +427,7 @@ namespace RogueElements.Tests
             var gen = new TestFloorPlanGen('B');
             gen.PrepareDraw(new Rect(0, 0, 3, 2));
 
-            SpawnList<Loc> possiblePlacements = new SpawnList<Loc>();
+            RandWeighted<Loc> possiblePlacements = new RandWeighted<Loc>();
 
             FloorPathTestBranch.AddLegalPlacements(possiblePlacements, floorPlan, new RoomHallIndex(0, false), floorPlan.GetRoom(0), gen, expandTo);
 
@@ -461,7 +461,7 @@ namespace RogueElements.Tests
             var gen = new TestFloorPlanGen('C');
             gen.PrepareDraw(new Rect(0, 0, 2, 2));
 
-            SpawnList<Loc> possiblePlacements = new SpawnList<Loc>();
+            RandWeighted<Loc> possiblePlacements = new RandWeighted<Loc>();
 
             FloorPathTestBranch.AddLegalPlacements(possiblePlacements, floorPlan, new RoomHallIndex(1, false), floorPlan.GetRoom(1), gen, Dir4.Down);
 
@@ -488,7 +488,7 @@ namespace RogueElements.Tests
             var gen = new TestFloorPlanGen('C');
             gen.PrepareDraw(new Rect(0, 0, 4, 2));
 
-            SpawnList<Loc> possiblePlacements = new SpawnList<Loc>();
+            RandWeighted<Loc> possiblePlacements = new RandWeighted<Loc>();
 
             FloorPathTestBranch.AddLegalPlacements(possiblePlacements, floorPlan, new RoomHallIndex(1, false), floorPlan.GetRoom(1), gen, Dir4.Down);
 
@@ -519,7 +519,7 @@ namespace RogueElements.Tests
             var gen = new TestFloorPlanGen('B');
             gen.PrepareDraw(new Rect(0, 0, 3, 3));
 
-            SpawnList<Loc> possiblePlacements = new SpawnList<Loc>();
+            RandWeighted<Loc> possiblePlacements = new RandWeighted<Loc>();
 
             FloorPathTestBranch.AddLegalPlacements(possiblePlacements, floorPlan, new RoomHallIndex(0, false), floorPlan.GetRoom(0), gen, expandTo);
 
@@ -1861,7 +1861,7 @@ namespace RogueElements.Tests
             {
             }
 
-            public static void AddLegalPlacements(SpawnList<Loc> possiblePlacements, TestFloorPlan floorPlan, RoomHallIndex indexFrom, IRoomGen roomFrom, IRoomGen room, Dir4 expandTo) => FloorPathBranch<IFloorPlanTestContext>.AddLegalPlacements(possiblePlacements, floorPlan, indexFrom, roomFrom, room, expandTo);
+            public static void AddLegalPlacements(RandWeighted<Loc> possiblePlacements, TestFloorPlan floorPlan, RoomHallIndex indexFrom, IRoomGen roomFrom, IRoomGen room, Dir4 expandTo) => FloorPathBranch<IFloorPlanTestContext>.AddLegalPlacements(possiblePlacements, floorPlan, indexFrom, roomFrom, room, expandTo);
 
             public static List<RoomHallIndex> GetPossibleExpansions(TestFloorPlan floorPlan, bool branch) => FloorPathBranch<IFloorPlanTestContext>.GetPossibleExpansions(floorPlan, branch);
         }

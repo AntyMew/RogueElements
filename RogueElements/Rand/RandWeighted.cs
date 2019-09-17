@@ -1,4 +1,4 @@
-// <copyright file="SpawnList.cs" company="Audino">
+// <copyright file="RandWeighted.cs" company="Audino">
 // Copyright (c) Audino
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -16,7 +16,7 @@ namespace RogueElements
     /// <seealso cref="RandBag{T}"/>
     /// </summary>
     /// <typeparam name="T">The type of the item to pick.</typeparam>
-    public class SpawnList<T> : IDictionary<T, int>, IRandPicker<T>
+    public class RandWeighted<T> : IDictionary<T, int>, IRandPicker<T>
     {
         private readonly LinkedDictionary<T, int> items;
         private readonly List<IRandPicker<T>> groups;
@@ -24,24 +24,24 @@ namespace RogueElements
         private bool initialized;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SpawnList{T}"/> class that is empty and has the specified initial capacity.
+        /// Initializes a new instance of the <see cref="RandWeighted{T}"/> class that is empty and has the specified initial capacity.
         /// </summary>
-        /// <param name="capacity">The number of elements the new <see cref="SpawnList{T}"/> can initially store.</param>
+        /// <param name="capacity">The number of elements the new <see cref="RandWeighted{T}"/> can initially store.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> is less than 0.</exception>
-        public SpawnList(int capacity = 0)
+        public RandWeighted(int capacity = 0)
         {
             this.items = new LinkedDictionary<T, int>(capacity);
             this.groups = new List<IRandPicker<T>>(capacity);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SpawnList{T}"/> class that contains the key-value pairs of the specified
+        /// Initializes a new instance of the <see cref="RandWeighted{T}"/> class that contains the key-value pairs of the specified
         /// collection.
         /// </summary>
-        /// <param name="pairs">The collection of key-value pairs to copy to the new <see cref="SpawnList{T}"/>.</param>
+        /// <param name="pairs">The collection of key-value pairs to copy to the new <see cref="RandWeighted{T}"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="pairs"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">One or more of the weights is less than 1.</exception>
-        public SpawnList(IEnumerable<KeyValuePair<T, int>> pairs)
+        public RandWeighted(IEnumerable<KeyValuePair<T, int>> pairs)
             : this(pairs.Count())
         {
             foreach (KeyValuePair<T, int> pair in pairs)
@@ -49,11 +49,11 @@ namespace RogueElements
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SpawnList{T}"/> class that contains a copy of the state of the other instance.
+        /// Initializes a new instance of the <see cref="RandWeighted{T}"/> class that contains a copy of the state of the other instance.
         /// </summary>
-        /// <param name="other">The <see cref="SpawnList{T}"/> instance to copy.</param>
+        /// <param name="other">The <see cref="RandWeighted{T}"/> instance to copy.</param>
         /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
-        protected SpawnList(SpawnList<T> other)
+        protected RandWeighted(RandWeighted<T> other)
             : this(other.items)
         {
             this.groups = other.groups.ToList();
@@ -61,49 +61,49 @@ namespace RogueElements
         }
 
         /// <summary>
-        /// Gets the number of elements contained in the <see cref="SpawnList{T}"/>.
+        /// Gets the number of elements contained in the <see cref="RandWeighted{T}"/>.
         /// </summary>
         public int Count => this.items.Count;
 
         /// <summary>
-        /// Gets a collection containing the keys in the <see cref="SpawnList{T}"/>.
+        /// Gets a collection containing the keys in the <see cref="RandWeighted{T}"/>.
         /// </summary>
         /// <value>
-        /// An <see cref="ICollection{TKey}"/> of the keys in <see cref="SpawnList{T}"/> ordered from oldest to newest added element.
+        /// An <see cref="ICollection{TKey}"/> of the keys in <see cref="RandWeighted{T}"/> ordered from oldest to newest added element.
         /// </value>
         public ICollection<T> Keys => this.items.Keys;
 
         /// <summary>
-        /// Gets a collection containing the values in the <see cref="SpawnList{T}"/>.
+        /// Gets a collection containing the values in the <see cref="RandWeighted{T}"/>.
         /// </summary>
         /// <value>
-        /// An <see cref="ICollection{TKey}"/> of the values in <see cref="SpawnList{T}"/> ordered from oldest to newest added element.
+        /// An <see cref="ICollection{TKey}"/> of the values in <see cref="RandWeighted{T}"/> ordered from oldest to newest added element.
         /// </value>
         public ICollection<int> Values => this.items.Values;
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="SpawnList{T}"/> is read-only.
+        /// Gets a value indicating whether the <see cref="RandWeighted{T}"/> is read-only.
         /// </summary>
         /// <value>Always <see langword="true"/>.</value>
         public bool IsReadOnly => this.items.IsReadOnly;
 
         /// <summary>
-        /// Gets a value indicating whether the state of the <see cref="SpawnList{T}"/> is mutable.
+        /// Gets a value indicating whether the state of the <see cref="RandWeighted{T}"/> is mutable.
         /// </summary>
         public bool ChangesState => !this.IsReadOnly;
 
         /// <summary>
-        /// Gets a value indicating whether an item can be picked from the <see cref="SpawnList{T}"/>.
+        /// Gets a value indicating whether an item can be picked from the <see cref="RandWeighted{T}"/>.
         /// </summary>
         public bool CanPick => this.items.Count > 0;
 
         /// <summary>
-        /// Gets or sets the weight associated with an item contained in the <see cref="SpawnList{T}"/>.
+        /// Gets or sets the weight associated with an item contained in the <see cref="RandWeighted{T}"/>.
         /// </summary>
         /// <param name="item">The item associated with the weight to retrieve.</param>
         /// <exception cref="ArgumentNullException"><paramref name="item"/> is <see langword="null"/>.</exception>
         /// <exception cref="KeyNotFoundException">
-        /// <paramref name="item"/> does not exist in the <see cref="SpawnList{T}"/>.
+        /// <paramref name="item"/> does not exist in the <see cref="RandWeighted{T}"/>.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is less than 1.</exception>
         public int this[T item]
@@ -122,7 +122,7 @@ namespace RogueElements
         }
 
         /// <summary>
-        /// Randomly picks an item in the <see cref="SpawnList{T}"/>.
+        /// Randomly picks an item in the <see cref="RandWeighted{T}"/>.
         /// </summary>
         /// <param name="random">The PRNG used to select the chosen item.</param>
         /// <returns>The selected random value.</returns>
@@ -136,13 +136,13 @@ namespace RogueElements
         }
 
         /// <summary>
-        /// Instantiates a shallow copy of the <see cref="SpawnList{T}"/>.
+        /// Instantiates a shallow copy of the <see cref="RandWeighted{T}"/>.
         /// </summary>
-        /// <returns>A shallow copy of the <see cref="SpawnList{T}"/>.</returns>
-        public SpawnList<T> CopyState() => new SpawnList<T>(this);
+        /// <returns>A shallow copy of the <see cref="RandWeighted{T}"/>.</returns>
+        public RandWeighted<T> CopyState() => new RandWeighted<T>(this);
 
         /// <summary>
-        /// Adds an item with the specified weight to the <see cref="SpawnList{T}"/>. If the item already exists, adds the weights
+        /// Adds an item with the specified weight to the <see cref="RandWeighted{T}"/>. If the item already exists, adds the weights
         /// together.
         /// </summary>
         /// <param name="item">The item to add.</param>
@@ -184,7 +184,7 @@ namespace RogueElements
         }
 
         /// <summary>
-        /// Attempts to get the specified item from the <see cref="SpawnList{T}"/>.
+        /// Attempts to get the specified item from the <see cref="RandWeighted{T}"/>.
         /// </summary>
         /// <param name="item">The item to attempt to get.</param>
         /// <param name="weight">
@@ -192,7 +192,7 @@ namespace RogueElements
         /// <typeparamref name="T"/>.
         /// </param>
         /// <returns>
-        /// <see langword="true"/> if the <see cref="SpawnList{T}"/> contains the <paramref name="item"/>; otherwise,
+        /// <see langword="true"/> if the <see cref="RandWeighted{T}"/> contains the <paramref name="item"/>; otherwise,
         /// /// <see langword="false"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="item"/> is <see langword="null"/>.</exception>
@@ -200,11 +200,11 @@ namespace RogueElements
             => this.items.TryGetValue(item, out weight);
 
         /// <summary>
-        /// Determines whether the <see cref="SpawnList{T}"/> contains the specified item.
+        /// Determines whether the <see cref="RandWeighted{T}"/> contains the specified item.
         /// </summary>
         /// <param name="item">The item to locate.</param>
         /// <returns>
-        /// <see langword="true"/> if the <see cref="SpawnList{T}"/> contains the <paramref name="item"/>; otherwise,
+        /// <see langword="true"/> if the <see cref="RandWeighted{T}"/> contains the <paramref name="item"/>; otherwise,
         /// <see langword="false"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="item"/> is <see langword="null"/>.</exception>
@@ -212,7 +212,7 @@ namespace RogueElements
             => this.items.ContainsKey(item);
 
         /// <summary>
-        /// Removes all elements from the <see cref="SpawnList{T}"/>.
+        /// Removes all elements from the <see cref="RandWeighted{T}"/>.
         /// </summary>
         public void Clear()
         {
@@ -223,7 +223,7 @@ namespace RogueElements
         }
 
         /// <summary>
-        /// Returns a collection that contains the possible items the <see cref="SpawnList{T}"/> can select.
+        /// Returns a collection that contains the possible items the <see cref="RandWeighted{T}"/> can select.
         /// </summary>
         /// <returns>An <see cref="IEnumerator{T}"/> that can be used to iterate over the possible items.</returns>
         public IEnumerator<KeyValuePair<T, int>> GetEnumerator() => this.GetEnumerator();

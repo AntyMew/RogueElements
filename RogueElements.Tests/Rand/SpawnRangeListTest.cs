@@ -16,7 +16,7 @@ namespace RogueElements.Tests
         private SpawnRangeList<string> spawnRangeList;
 
         [SetUp]
-        public void SpawnListSetUp()
+        public void RandWeightedSetUp()
         {
             this.spawnRangeList = new SpawnRangeList<string>();
             this.spawnRangeList.Add("apple", new Range(0, 5), 10);
@@ -72,9 +72,9 @@ namespace RogueElements.Tests
         [TestCase(5, 1, "orange", 20)]
         [TestCase(8, 1, "orange", 20)]
         [TestCase(9, 0, "", 0)]
-        public void SpawnRangeListSpawnList(int level, int count, string result, int rate)
+        public void SpawnRangeListRandWeighted(int level, int count, string result, int rate)
         {
-            SpawnList<string> picker = this.spawnRangeList.GetSpawnList(level);
+            RandWeighted<string> picker = this.spawnRangeList.GetRandWeighted(level);
             Assert.That(picker.Count, Is.EqualTo(count));
             if (count > 0)
             {

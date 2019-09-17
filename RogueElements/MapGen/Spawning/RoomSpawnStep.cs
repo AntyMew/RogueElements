@@ -23,7 +23,7 @@ namespace RogueElements
         {
         }
 
-        public virtual void SpawnRandInCandRooms(TGenContext map, SpawnList<RoomHallIndex> spawningRooms, List<TSpawnable> spawns, int successPercent)
+        public virtual void SpawnRandInCandRooms(TGenContext map, RandWeighted<RoomHallIndex> spawningRooms, List<TSpawnable> spawns, int successPercent)
         {
             while (spawningRooms.Count > 0 && spawns.Count > 0)
             {

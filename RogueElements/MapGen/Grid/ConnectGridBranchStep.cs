@@ -14,7 +14,7 @@ namespace RogueElements
     {
         public ConnectGridBranchStep()
         {
-            this.GenericHalls = new SpawnList<PermissiveRoomGen<T>>();
+            this.GenericHalls = new RandWeighted<PermissiveRoomGen<T>>();
         }
 
         public ConnectGridBranchStep(int connectPercent)

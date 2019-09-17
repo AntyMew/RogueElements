@@ -307,7 +307,7 @@ namespace RogueElements.Tests
 
             public static ListPathTraversalNode? GetRoomToConnect(TestFloorPlan floorPlan, RoomHallIndex chosenFrom, Dir4 dir) => ConnectStep<IFloorPlanTestContext>.GetRoomToConnect(floorPlan, chosenFrom, dir);
 
-            public static SpawnList<ListPathTraversalNode> GetPossibleExpansions(TestFloorPlan floorPlan, List<RoomHallIndex> candList) => ConnectStep<IFloorPlanTestContext>.GetPossibleExpansions(floorPlan, candList);
+            public static RandWeighted<ListPathTraversalNode> GetPossibleExpansions(TestFloorPlan floorPlan, List<RoomHallIndex> candList) => ConnectStep<IFloorPlanTestContext>.GetPossibleExpansions(floorPlan, candList);
 
             public override void ApplyToPath(IRandom rand, FloorPlan floorPlan)
             {

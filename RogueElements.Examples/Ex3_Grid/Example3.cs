@@ -34,14 +34,14 @@ namespace RogueElements.Examples.Ex3_Grid
                 BranchRatio = new RandRange(0, 50),
             };
 
-            var genericRooms = new SpawnList<RoomGen<MapGenContext>>
+            var genericRooms = new RandWeighted<RoomGen<MapGenContext>>
             {
                 { new RoomGenSquare<MapGenContext>(new RandRange(4, 8), new RandRange(4, 8)), 10 }, // cross
                 { new RoomGenRound<MapGenContext>(new RandRange(5, 9), new RandRange(5, 9)), 10 }, // round
             };
             path.GenericRooms = genericRooms;
 
-            var genericHalls = new SpawnList<PermissiveRoomGen<MapGenContext>> { { new RoomGenAngledHall<MapGenContext>(50), 1} };
+            var genericHalls = new RandWeighted<PermissiveRoomGen<MapGenContext>> { { new RoomGenAngledHall<MapGenContext>(50), 1 } };
             path.GenericHalls = genericHalls;
 
             layout.GenSteps.Add(-4, path);

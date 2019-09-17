@@ -1,4 +1,4 @@
-// <copyright file="SpawnListTest.cs" company="Audino">
+// <copyright file="RandWeightedTest.cs" company="Audino">
 // Copyright (c) Audino
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -9,14 +9,14 @@ using NUnit.Framework;
 namespace RogueElements.Tests
 {
     [TestFixture]
-    public class SpawnListTest
+    public class RandWeightedTest
     {
-        private SpawnList<string> picker;
+        private RandWeighted<string> picker;
 
         [SetUp]
-        public void SpawnListSetUp()
+        public void RandWeightedSetUp()
         {
-            this.picker = new SpawnList<string>
+            this.picker = new RandWeighted<string>
             {
                 { "apple", 10 },
                 { "orange", 20 },
@@ -25,7 +25,7 @@ namespace RogueElements.Tests
         }
 
         [Test]
-        public void SpawnListCanPick()
+        public void RandWeightedCanPick()
         {
             Assert.That(this.picker.CanPick);
         }
@@ -34,7 +34,7 @@ namespace RogueElements.Tests
         [TestCase("apple", 10)]
         [TestCase("orange", 20)]
         [TestCase("banana", 30)]
-        public void SpawnListGetWeight(string spawn, int weight)
+        public void RandWeightedGetWeight(string spawn, int weight)
         {
             // get spawn rate
             Assert.That(this.picker[spawn], Is.EqualTo(weight));
@@ -42,7 +42,7 @@ namespace RogueElements.Tests
 
         [Test]
         [TestCase(5)]
-        public void SpawnListSetWeight(int weight)
+        public void RandWeightedSetWeight(int weight)
         {
             // set spawn rate
             this.picker["apple"] = weight;
@@ -50,7 +50,7 @@ namespace RogueElements.Tests
         }
 
         [Test]
-        public void SpawnListAdd()
+        public void RandWeightedAdd()
         {
             // add a spawn
             this.picker.Add("watermelon", 15);
@@ -60,7 +60,7 @@ namespace RogueElements.Tests
         }
 
         [Test]
-        public void SpawnListAddExisting()
+        public void RandWeightedAddExisting()
         {
             // add an existing spawn
             this.picker.Add("apple", 15);
@@ -70,7 +70,7 @@ namespace RogueElements.Tests
         }
 
         [Test]
-        public void SpawnListRemove()
+        public void RandWeightedRemove()
         {
             // remove a spawn
             this.picker.Remove("apple");
@@ -79,7 +79,7 @@ namespace RogueElements.Tests
         }
 
         [Test]
-        public void SpawnListClear()
+        public void RandWeightedClear()
         {
             // remove all spawn
             this.picker.Clear();
@@ -91,7 +91,7 @@ namespace RogueElements.Tests
         [TestCase("apple", 10)]
         [TestCase("orange", 20)]
         [TestCase("banana", 30)]
-        public void SpawnListGetWeights(string item, int weight)
+        public void RandWeightedGetWeights(string item, int weight)
         {
             // check all spawns
             Assert.That(this.picker[item], Is.EqualTo(weight));

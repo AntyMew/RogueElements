@@ -22,14 +22,14 @@ namespace RogueElements.Examples.Ex2_Rooms
             layout.GenSteps.Add(-2, startGen);
 
             // Create some room types to place
-            SpawnList<RoomGen<MapGenContext>> genericRooms = new SpawnList<RoomGen<MapGenContext>>
+            RandWeighted<RoomGen<MapGenContext>> genericRooms = new RandWeighted<RoomGen<MapGenContext>>
             {
                 { new RoomGenSquare<MapGenContext>(new RandRange(4, 8), new RandRange(4, 8)), 10 }, // square
                 { new RoomGenRound<MapGenContext>(new RandRange(5, 9), new RandRange(5, 9)), 10 }, // round
             };
 
             // Create some hall types to place
-            var genericHalls = new SpawnList<PermissiveRoomGen<MapGenContext>>
+            var genericHalls = new RandWeighted<PermissiveRoomGen<MapGenContext>>
             {
                 { new RoomGenAngledHall<MapGenContext>(0, new RandRange(3, 7), new RandRange(3, 7)), 10 },
                 { new RoomGenSquare<MapGenContext>(new RandRange(1), new RandRange(1)), 20 },

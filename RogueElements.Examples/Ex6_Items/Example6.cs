@@ -33,14 +33,14 @@ namespace RogueElements.Examples.Ex6_Items
                 BranchRatio = new RandRange(0, 50),
             };
 
-            var genericRooms = new SpawnList<RoomGen<MapGenContext>>
+            var genericRooms = new RandWeighted<RoomGen<MapGenContext>>
             {
                 { new RoomGenSquare<MapGenContext>(new RandRange(4, 8), new RandRange(4, 8)), 1 }, // cross
                 { new RoomGenRound<MapGenContext>(new RandRange(5, 9), new RandRange(5, 9)), 1 }, // round
             };
             path.GenericRooms = genericRooms;
 
-            var genericHalls = new SpawnList<PermissiveRoomGen<MapGenContext>>
+            var genericHalls = new RandWeighted<PermissiveRoomGen<MapGenContext>>
             {
                 { new RoomGenAngledHall<MapGenContext>(50), 1 },
             };
@@ -69,7 +69,7 @@ namespace RogueElements.Examples.Ex6_Items
             layout.GenSteps.Add(4, new EraseIsolatedStep<MapGenContext>(new Tile(terrain)));
 
             // Apply Items
-            var itemSpawns = new SpawnList<Item>
+            var itemSpawns = new RandWeighted<Item>
             {
                 { new Item((int)'!'), 10 },
                 { new Item((int)']'), 10 },
@@ -83,7 +83,7 @@ namespace RogueElements.Examples.Ex6_Items
             layout.GenSteps.Add(6, itemPlacement);
 
             // Apply Mobs
-            var mobSpawns = new SpawnList<Mob>
+            var mobSpawns = new RandWeighted<Mob>
             {
                 { new Mob((int)'r'), 20 },
                 { new Mob((int)'T'), 10 },

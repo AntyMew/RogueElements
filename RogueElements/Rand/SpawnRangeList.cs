@@ -59,9 +59,9 @@ namespace RogueElements
                 yield return spawn.Spawn;
         }
 
-        public SpawnList<T> GetSpawnList(int level)
+        public RandWeighted<T> GetRandWeighted(int level)
         {
-            SpawnList<T> newList = new SpawnList<T>();
+            RandWeighted<T> newList = new RandWeighted<T>();
             foreach (SpawnRange spawn in this.spawns)
             {
                 if (spawn.Range.Min <= level && level < spawn.Range.Max)
@@ -104,7 +104,7 @@ namespace RogueElements
                 }
             }
 
-            throw new InvalidOperationException("Cannot spawn from a spawnlist of total rate 0!");
+            throw new InvalidOperationException("Cannot spawn from a RandWeighted of total rate 0!");
         }
 
         private IEnumerable<SpawnRange> GetLevelSpawnsImpl(int level)

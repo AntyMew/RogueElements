@@ -137,7 +137,7 @@ namespace RogueElements
                     hall = this.PrepareRoom(rand, floorPlan, true);
 
                     // randomly choose a perimeter to assign this to
-                    SpawnList<Loc> possibleHallPlacements = new SpawnList<Loc>();
+                    RandWeighted<Loc> possibleHallPlacements = new RandWeighted<Loc>();
                     foreach (Dir4 dir in DirExt.VALID_DIR4)
                         AddLegalPlacements(possibleHallPlacements, floorPlan, expandFrom, roomFrom, hall, dir);
 
@@ -160,7 +160,7 @@ namespace RogueElements
                 IRoomGen room = this.PrepareRoom(rand, floorPlan, false);
 
                 // randomly choose a perimeter to assign this to
-                SpawnList<Loc> possiblePlacements = new SpawnList<Loc>();
+                RandWeighted<Loc> possiblePlacements = new RandWeighted<Loc>();
                 foreach (Dir4 dir in DirExt.VALID_DIR4)
                     AddLegalPlacements(possiblePlacements, floorPlan, expandFrom, roomFrom, room, dir);
 
@@ -205,7 +205,7 @@ namespace RogueElements
             return room;
         }
 
-        private protected static void AddLegalPlacements(SpawnList<Loc> possiblePlacements, FloorPlan floorPlan, RoomHallIndex indexFrom, IRoomGen roomFrom, IRoomGen room, Dir4 expandTo)
+        private protected static void AddLegalPlacements(RandWeighted<Loc> possiblePlacements, FloorPlan floorPlan, RoomHallIndex indexFrom, IRoomGen roomFrom, IRoomGen room, Dir4 expandTo)
         {
             bool vertical = expandTo.ToAxis() == Axis4.Vert;
 

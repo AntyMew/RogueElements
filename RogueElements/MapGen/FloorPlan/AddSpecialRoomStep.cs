@@ -72,7 +72,7 @@ namespace RogueElements
 
             // TODO: accept smaller rooms to replace
             // bulldozing the surrounding rooms to get the space
-            var room_indices = new SpawnList<RoomHallIndex>();
+            var room_indices = new RandWeighted<RoomHallIndex>();
             for (int ii = 0; ii < floorPlan.RoomCount; ii++)
             {
                 FloorRoomPlan plan = floorPlan.GetRoomPlan(ii);
@@ -172,15 +172,15 @@ namespace RogueElements
 
         public Loc FindPlacement(IRandom rand, Dictionary<Dir4, List<IRoomGen>> adjacentsByDir, IRoomGen newGen, IRoomGen oldGen)
         {
-            SpawnList<Loc> possiblePlacements = this.GetPossiblePlacements(adjacentsByDir, newGen, oldGen);
+            RandWeighted<Loc> possiblePlacements = this.GetPossiblePlacements(adjacentsByDir, newGen, oldGen);
             return possiblePlacements.CanPick ? possiblePlacements.Pick(rand) : new Loc(-1);
         }
 
-        public SpawnList<Loc> GetPossiblePlacements(Dictionary<Dir4, List<IRoomGen>> adjacentsByDir, IRoomGen newGen, IRoomGen oldGen)
+        public RandWeighted<Loc> GetPossiblePlacements(Dictionary<Dir4, List<IRoomGen>> adjacentsByDir, IRoomGen newGen, IRoomGen oldGen)
         {
             // test all positions around perimeter
             Rect oldRect = oldGen.Draw;
-            SpawnList<Loc> possiblePlacements = new SpawnList<Loc>();
+            RandWeighted<Loc> possiblePlacements = new RandWeighted<Loc>();
 
             // top and bottom
             for (int xx = oldRect.Left; xx < oldRect.Right - newGen.Draw.Width + 1; xx++)

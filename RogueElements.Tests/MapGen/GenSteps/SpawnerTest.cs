@@ -140,7 +140,7 @@ namespace RogueElements.Tests
             Mock<IPlaceableRoomTestContext> mockMap = new Mock<IPlaceableRoomTestContext>(MockBehavior.Strict);
             mockMap.SetupGet(p => p.Rand).Returns(testRand.Object);
 
-            var spawningRooms = new SpawnList<RoomHallIndex>
+            var spawningRooms = new RandWeighted<RoomHallIndex>
             {
                 { new RoomHallIndex(0, false), 1 },
                 { new RoomHallIndex(1, false), 1 },
@@ -169,7 +169,7 @@ namespace RogueElements.Tests
         }
 
         [Test]
-        [Ignore("TODO: Broken by SpawnList changes")]
+        [Ignore("TODO: Broken by RandWeighted changes")]
         [TestCase(false, 100, 0)]
         [TestCase(true, 0, 3)]
         [TestCase(true, -100, 3)]
@@ -186,7 +186,7 @@ namespace RogueElements.Tests
             Mock<IPlaceableRoomTestContext> mockMap = new Mock<IPlaceableRoomTestContext>(MockBehavior.Strict);
             mockMap.SetupGet(p => p.Rand).Returns(testRand.Object);
 
-            SpawnList<RoomHallIndex> spawningRooms = new SpawnList<RoomHallIndex>
+            RandWeighted<RoomHallIndex> spawningRooms = new RandWeighted<RoomHallIndex>
             {
                 { new RoomHallIndex(0, false), 1 },
                 { new RoomHallIndex(1, false), 1 },
@@ -214,7 +214,7 @@ namespace RogueElements.Tests
         }
 
         [Test]
-        [Ignore("TODO: Broken by SpawnList changes")]
+        [Ignore("TODO: Broken by RandWeighted changes")]
         public void RoomSpawnStepSpawnRandInCandRoomsChangeChance()
         {
             // proves that the probability diminishes with each success
@@ -229,7 +229,7 @@ namespace RogueElements.Tests
             Mock<IPlaceableRoomTestContext> mockMap = new Mock<IPlaceableRoomTestContext>(MockBehavior.Strict);
             mockMap.SetupGet(p => p.Rand).Returns(testRand.Object);
 
-            var spawningRooms = new SpawnList<RoomHallIndex>
+            var spawningRooms = new RandWeighted<RoomHallIndex>
             {
                 { new RoomHallIndex(0, false), 4 },
                 { new RoomHallIndex(1, false), 4 },
@@ -260,7 +260,7 @@ namespace RogueElements.Tests
         }
 
         [Test]
-        [Ignore("TODO: Broken by SpawnList changes")]
+        [Ignore("TODO: Broken by RandWeighted changes")]
         public void RandomRoomSpawnStep()
         {
             Mock<IPlaceableRoomTestContext> mockMap = new Mock<IPlaceableRoomTestContext>(MockBehavior.Strict);
@@ -276,22 +276,22 @@ namespace RogueElements.Tests
 
             var roomSpawner = new Mock<RandomRoomSpawnStep<IPlaceableRoomTestContext, SpawnableChar>>(null, false) { CallBase = true };
 
-            SpawnList<RoomHallIndex> compare = new SpawnList<RoomHallIndex>
+            RandWeighted<RoomHallIndex> compare = new RandWeighted<RoomHallIndex>
             {
                 { new RoomHallIndex(0, false), 10 },
                 { new RoomHallIndex(1, false), 10 },
                 { new RoomHallIndex(2, false), 10 },
             };
 
-            roomSpawner.Setup(p => p.SpawnRandInCandRooms(mockMap.Object, It.IsAny<SpawnList<RoomHallIndex>>(), mockSpawns.Object, 100));
+            roomSpawner.Setup(p => p.SpawnRandInCandRooms(mockMap.Object, It.IsAny<RandWeighted<RoomHallIndex>>(), mockSpawns.Object, 100));
 
             roomSpawner.Object.DistributeSpawns(mockMap.Object, mockSpawns.Object);
 
-            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<SpawnList<RoomHallIndex>>(s => s.Equals(compare)), mockSpawns.Object, 100), Times.Exactly(1));
+            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<RandWeighted<RoomHallIndex>>(s => s.Equals(compare)), mockSpawns.Object, 100), Times.Exactly(1));
         }
 
         [Test]
-        [Ignore("TODO: Broken by SpawnList changes")]
+        [Ignore("TODO: Broken by RandWeighted changes")]
         public void TerminalSpawnStep()
         {
             // tests eligibility of terminals
@@ -317,12 +317,12 @@ namespace RogueElements.Tests
 
             var roomSpawner = new Mock<TerminalSpawnStep<IPlaceableRoomTestContext, SpawnableChar>>(null, false) { CallBase = true };
 
-            var compare1 = new SpawnList<RoomHallIndex>
+            var compare1 = new RandWeighted<RoomHallIndex>
             {
                 { new RoomHallIndex(1, false), 10 },
                 { new RoomHallIndex(3, false), 10 },
             };
-            var compare2 = new SpawnList<RoomHallIndex>
+            var compare2 = new RandWeighted<RoomHallIndex>
             {
                 { new RoomHallIndex(0, false), 10 },
                 { new RoomHallIndex(1, false), 10 },
@@ -330,16 +330,16 @@ namespace RogueElements.Tests
                 { new RoomHallIndex(3, false), 10 },
             };
 
-            roomSpawner.Setup(p => p.SpawnRandInCandRooms(mockMap.Object, It.IsAny<SpawnList<RoomHallIndex>>(), mockSpawns.Object, It.IsAny<int>()));
+            roomSpawner.Setup(p => p.SpawnRandInCandRooms(mockMap.Object, It.IsAny<RandWeighted<RoomHallIndex>>(), mockSpawns.Object, It.IsAny<int>()));
 
             roomSpawner.Object.DistributeSpawns(mockMap.Object, mockSpawns.Object);
 
-            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<SpawnList<RoomHallIndex>>(s => s.Equals(compare1)), mockSpawns.Object, 0), Times.Exactly(1));
-            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<SpawnList<RoomHallIndex>>(s => s.Equals(compare2)), mockSpawns.Object, 100), Times.Exactly(1));
+            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<RandWeighted<RoomHallIndex>>(s => s.Equals(compare1)), mockSpawns.Object, 0), Times.Exactly(1));
+            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<RandWeighted<RoomHallIndex>>(s => s.Equals(compare2)), mockSpawns.Object, 100), Times.Exactly(1));
         }
 
         [Test]
-        [Ignore("TODO: Broken by SpawnList changes")]
+        [Ignore("TODO: Broken by RandWeighted changes")]
         public void DueSpawnStepStraightABC()
         {
             // order of rooms
@@ -373,22 +373,22 @@ namespace RogueElements.Tests
 
             const int maxVal = 3;
             const int rooms = 3;
-            SpawnList<RoomHallIndex> compare = new SpawnList<RoomHallIndex>
+            RandWeighted<RoomHallIndex> compare = new RandWeighted<RoomHallIndex>
             {
                 { new RoomHallIndex(0, false), int.MaxValue / maxVal / rooms * 1 },
                 { new RoomHallIndex(1, false), int.MaxValue / maxVal / rooms * 2 },
                 { new RoomHallIndex(2, false), int.MaxValue / maxVal / rooms * 3 },
             };
 
-            roomSpawner.Setup(p => p.SpawnRandInCandRooms(mockMap.Object, It.IsAny<SpawnList<RoomHallIndex>>(), mockSpawns.Object, 100));
+            roomSpawner.Setup(p => p.SpawnRandInCandRooms(mockMap.Object, It.IsAny<RandWeighted<RoomHallIndex>>(), mockSpawns.Object, 100));
 
             roomSpawner.Object.DistributeSpawns(mockMap.Object, mockSpawns.Object);
 
-            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<SpawnList<RoomHallIndex>>(s => s.Equals(compare)), mockSpawns.Object, 100), Times.Exactly(1));
+            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<RandWeighted<RoomHallIndex>>(s => s.Equals(compare)), mockSpawns.Object, 100), Times.Exactly(1));
         }
 
         [Test]
-        [Ignore("TODO: Broken by SpawnList changes")]
+        [Ignore("TODO: Broken by RandWeighted changes")]
         public void DueSpawnStepMiddleABC()
         {
             // order of rooms
@@ -422,22 +422,22 @@ namespace RogueElements.Tests
 
             const int maxVal = 2;
             const int rooms = 3;
-            SpawnList<RoomHallIndex> compare = new SpawnList<RoomHallIndex>
+            RandWeighted<RoomHallIndex> compare = new RandWeighted<RoomHallIndex>
             {
                 { new RoomHallIndex(0, false), int.MaxValue / maxVal / rooms * 2 },
                 { new RoomHallIndex(1, false), int.MaxValue / maxVal / rooms * 1 },
                 { new RoomHallIndex(2, false), int.MaxValue / maxVal / rooms * 2 },
             };
 
-            roomSpawner.Setup(p => p.SpawnRandInCandRooms(mockMap.Object, It.IsAny<SpawnList<RoomHallIndex>>(), mockSpawns.Object, 100));
+            roomSpawner.Setup(p => p.SpawnRandInCandRooms(mockMap.Object, It.IsAny<RandWeighted<RoomHallIndex>>(), mockSpawns.Object, 100));
 
             roomSpawner.Object.DistributeSpawns(mockMap.Object, mockSpawns.Object);
 
-            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<SpawnList<RoomHallIndex>>(s => s.Equals(compare)), mockSpawns.Object, 100), Times.Exactly(1));
+            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<RandWeighted<RoomHallIndex>>(s => s.Equals(compare)), mockSpawns.Object, 100), Times.Exactly(1));
         }
 
         [Test]
-        [Ignore("TODO: Broken by SpawnList changes")]
+        [Ignore("TODO: Broken by RandWeighted changes")]
         public void DueSpawnStepLoopABCD()
         {
             // order of rooms
@@ -476,7 +476,7 @@ namespace RogueElements.Tests
 
             const int maxVal = 3;
             const int rooms = 4;
-            var compare = new SpawnList<RoomHallIndex>
+            var compare = new RandWeighted<RoomHallIndex>
             {
                 { new RoomHallIndex(0, false), int.MaxValue / maxVal / rooms * 1 },
                 { new RoomHallIndex(1, false), int.MaxValue / maxVal / rooms * 2 },
@@ -484,11 +484,11 @@ namespace RogueElements.Tests
                 { new RoomHallIndex(3, false), int.MaxValue / maxVal / rooms * 3 },
             };
 
-            roomSpawner.Setup(p => p.SpawnRandInCandRooms(mockMap.Object, It.IsAny<SpawnList<RoomHallIndex>>(), mockSpawns.Object, 100));
+            roomSpawner.Setup(p => p.SpawnRandInCandRooms(mockMap.Object, It.IsAny<RandWeighted<RoomHallIndex>>(), mockSpawns.Object, 100));
 
             roomSpawner.Object.DistributeSpawns(mockMap.Object, mockSpawns.Object);
 
-            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<SpawnList<RoomHallIndex>>(s => s.Equals(compare)), mockSpawns.Object, 100), Times.Exactly(1));
+            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<RandWeighted<RoomHallIndex>>(s => s.Equals(compare)), mockSpawns.Object, 100), Times.Exactly(1));
         }
 
         public struct SpawnableChar : ISpawnable

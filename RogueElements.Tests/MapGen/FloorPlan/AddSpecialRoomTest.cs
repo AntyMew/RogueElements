@@ -306,7 +306,7 @@ namespace RogueElements.Tests
 
             var pathGen = new Mock<AddSpecialRoomTestStep>(mockRooms.Object, mockHalls.Object) { CallBase = true };
             pathGen.Setup(p => p.GetAllBorderMatch(adjacentsByDir, mockTo.Object, mockFrom.Object, It.IsAny<Loc>())).Returns(1);
-            SpawnList<Loc> spawns = pathGen.Object.GetPossiblePlacements(adjacentsByDir, mockTo.Object, mockFrom.Object);
+            RandWeighted<Loc> spawns = pathGen.Object.GetPossiblePlacements(adjacentsByDir, mockTo.Object, mockFrom.Object);
 
             Assert.That(spawns.Count, Is.EqualTo(10));
             Assert.That(spawns.ContainsKey(new Loc(3, 3)));
@@ -339,7 +339,7 @@ namespace RogueElements.Tests
 
             var pathGen = new Mock<AddSpecialRoomTestStep>(mockRooms.Object, mockHalls.Object) { CallBase = true };
             pathGen.Setup(p => p.GetAllBorderMatch(adjacentsByDir, mockTo.Object, mockFrom.Object, It.IsAny<Loc>())).Returns(1);
-            SpawnList<Loc> spawns = pathGen.Object.GetPossiblePlacements(adjacentsByDir, mockTo.Object, mockFrom.Object);
+            RandWeighted<Loc> spawns = pathGen.Object.GetPossiblePlacements(adjacentsByDir, mockTo.Object, mockFrom.Object);
 
             Assert.That(spawns.Count, Is.EqualTo(3));
             Assert.That(spawns.ContainsKey(new Loc(3, 3)));
@@ -365,7 +365,7 @@ namespace RogueElements.Tests
 
             var pathGen = new Mock<AddSpecialRoomTestStep>(mockRooms.Object, mockHalls.Object) { CallBase = true };
             pathGen.Setup(p => p.GetAllBorderMatch(adjacentsByDir, mockTo.Object, mockFrom.Object, It.IsAny<Loc>())).Returns(1);
-            SpawnList<Loc> spawns = pathGen.Object.GetPossiblePlacements(adjacentsByDir, mockTo.Object, mockFrom.Object);
+            RandWeighted<Loc> spawns = pathGen.Object.GetPossiblePlacements(adjacentsByDir, mockTo.Object, mockFrom.Object);
 
             Assert.That(spawns.Count, Is.EqualTo(1));
             Assert.That(spawns.ContainsKey(new Loc(3, 3)));
@@ -390,7 +390,7 @@ namespace RogueElements.Tests
 
             var pathGen = new Mock<AddSpecialRoomTestStep>(mockRooms.Object, mockHalls.Object) { CallBase = true };
             pathGen.Setup(p => p.GetAllBorderMatch(adjacentsByDir, mockTo.Object, mockFrom.Object, It.IsAny<Loc>())).Returns(0);
-            SpawnList<Loc> spawns = pathGen.Object.GetPossiblePlacements(adjacentsByDir, mockTo.Object, mockFrom.Object);
+            RandWeighted<Loc> spawns = pathGen.Object.GetPossiblePlacements(adjacentsByDir, mockTo.Object, mockFrom.Object);
 
             Assert.That(spawns.Count, Is.EqualTo(4));
             Assert.That(spawns.ContainsKey(new Loc(4, 4)));
@@ -422,7 +422,7 @@ namespace RogueElements.Tests
 
             var pathGen = new Mock<AddSpecialRoomTestStep>(mockRooms.Object, mockHalls.Object) { CallBase = true };
             pathGen.Setup(p => p.GetAllBorderMatch(adjacentsByDir, mockTo.Object, mockFrom.Object, It.IsAny<Loc>())).Returns(0);
-            SpawnList<Loc> spawns = pathGen.Object.GetPossiblePlacements(adjacentsByDir, mockTo.Object, mockFrom.Object);
+            RandWeighted<Loc> spawns = pathGen.Object.GetPossiblePlacements(adjacentsByDir, mockTo.Object, mockFrom.Object);
 
             Assert.That(spawns.Count, Is.EqualTo(0));
         }
