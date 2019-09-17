@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 
@@ -260,7 +261,6 @@ namespace RogueElements.Tests
         }
 
         [Test]
-        [Ignore("TODO: Broken by RandWeighted changes")]
         public void RandomRoomSpawnStep()
         {
             Mock<IPlaceableRoomTestContext> mockMap = new Mock<IPlaceableRoomTestContext>(MockBehavior.Strict);
@@ -287,11 +287,10 @@ namespace RogueElements.Tests
 
             roomSpawner.Object.DistributeSpawns(mockMap.Object, mockSpawns.Object);
 
-            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<RandWeighted<RoomHallIndex>>(s => s.Equals(compare)), mockSpawns.Object, 100), Times.Exactly(1));
+            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<RandWeighted<RoomHallIndex>>(s => CompareLinkedDict(s, compare)), mockSpawns.Object, 100), Times.Exactly(1));
         }
 
         [Test]
-        [Ignore("TODO: Broken by RandWeighted changes")]
         public void TerminalSpawnStep()
         {
             // tests eligibility of terminals
@@ -334,12 +333,11 @@ namespace RogueElements.Tests
 
             roomSpawner.Object.DistributeSpawns(mockMap.Object, mockSpawns.Object);
 
-            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<RandWeighted<RoomHallIndex>>(s => s.Equals(compare1)), mockSpawns.Object, 0), Times.Exactly(1));
-            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<RandWeighted<RoomHallIndex>>(s => s.Equals(compare2)), mockSpawns.Object, 100), Times.Exactly(1));
+            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<RandWeighted<RoomHallIndex>>(s => CompareLinkedDict(s, compare1)), mockSpawns.Object, 0), Times.Exactly(1));
+            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<RandWeighted<RoomHallIndex>>(s => CompareLinkedDict(s, compare2)), mockSpawns.Object, 100), Times.Exactly(1));
         }
 
         [Test]
-        [Ignore("TODO: Broken by RandWeighted changes")]
         public void DueSpawnStepStraightABC()
         {
             // order of rooms
@@ -384,11 +382,10 @@ namespace RogueElements.Tests
 
             roomSpawner.Object.DistributeSpawns(mockMap.Object, mockSpawns.Object);
 
-            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<RandWeighted<RoomHallIndex>>(s => s.Equals(compare)), mockSpawns.Object, 100), Times.Exactly(1));
+            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<RandWeighted<RoomHallIndex>>(s => CompareLinkedDict(s, compare)), mockSpawns.Object, 100), Times.Exactly(1));
         }
 
         [Test]
-        [Ignore("TODO: Broken by RandWeighted changes")]
         public void DueSpawnStepMiddleABC()
         {
             // order of rooms
@@ -433,11 +430,12 @@ namespace RogueElements.Tests
 
             roomSpawner.Object.DistributeSpawns(mockMap.Object, mockSpawns.Object);
 
-            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<RandWeighted<RoomHallIndex>>(s => s.Equals(compare)), mockSpawns.Object, 100), Times.Exactly(1));
+
+
+            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<RandWeighted<RoomHallIndex>>(s => CompareLinkedDict(s, compare)), mockSpawns.Object, 100), Times.Exactly(1));
         }
 
         [Test]
-        [Ignore("TODO: Broken by RandWeighted changes")]
         public void DueSpawnStepLoopABCD()
         {
             // order of rooms
@@ -488,7 +486,14 @@ namespace RogueElements.Tests
 
             roomSpawner.Object.DistributeSpawns(mockMap.Object, mockSpawns.Object);
 
-            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<RandWeighted<RoomHallIndex>>(s => s.Equals(compare)), mockSpawns.Object, 100), Times.Exactly(1));
+            roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<RandWeighted<RoomHallIndex>>(s => CompareLinkedDict(s, compare)), mockSpawns.Object, 100), Times.Exactly(1));
+        }
+
+        private static bool CompareLinkedDict<TKey, TValue>(IDictionary<TKey, TValue> lhs, IDictionary<TKey, TValue> rhs)
+        {
+            if (lhs.Count != rhs.Count)
+                return false;
+            return lhs.Keys.Zip(rhs.Keys, ValueTuple.Create).All(t => t.Item1.Equals(t.Item2) && lhs[t.Item1].Equals(rhs[t.Item2]));
         }
 
         public struct SpawnableChar : ISpawnable
