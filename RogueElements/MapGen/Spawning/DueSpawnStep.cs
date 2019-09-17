@@ -70,7 +70,8 @@ namespace RogueElements
             int multFactor = int.MaxValue / maxVal / roomWeights.Length;
             for (int ii = 0; ii < roomWeights.Length; ii++)
             {
-                spawningRooms.Add(new RoomHallIndex(ii, false), roomWeights[ii] * multFactor);
+                if (roomWeights[ii] > 0)
+                    spawningRooms.Add(new RoomHallIndex(ii, false), roomWeights[ii] * multFactor);
             }
 
             this.SpawnRandInCandRooms(map, spawningRooms, spawns, this.SuccessPercent);
