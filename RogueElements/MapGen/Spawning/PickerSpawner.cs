@@ -22,23 +22,22 @@ namespace RogueElements
         {
         }
 
-        public PickerSpawner(IMultiRandPicker<TSpawnable> picker)
+        public PickerSpawner(IRandPicker<IEnumerable<TSpawnable>> picker)
         {
             this.Picker = picker;
         }
 
-        public IMultiRandPicker<TSpawnable> Picker { get; set; }
+        public IRandPicker<IEnumerable<TSpawnable>> Picker { get; set; }
 
         public List<TSpawnable> GetSpawns(TGenContext map)
         {
             if (this.Picker is null)
                 return new List<TSpawnable>();
-            IMultiRandPicker<TSpawnable> picker = this.Picker;
+            IRandPicker<IEnumerable<TSpawnable>> picker = this.Picker;
             if (picker.ChangesState)
                 picker = picker.CopyState();
-            List<TSpawnable> results = picker.Roll(map.Rand);
             var copyResults = new List<TSpawnable>();
-            foreach (TSpawnable result in results)
+            foreach (TSpawnable result in picker.Pick(map.Rand))
                 copyResults.Add((TSpawnable)result.Copy());
             return copyResults;
         }

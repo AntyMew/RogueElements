@@ -48,15 +48,6 @@ namespace RogueElements
 
         public IRandPicker<int> CopyState() => new RandRange(this);
 
-        public IEnumerator<int> GetEnumerator()
-        {
-            yield return this.Min;
-            for (int ii = this.Min + 1; ii < this.Max; ii++)
-                yield return ii;
-        }
-
-        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
-
         public int Pick(IRandom rand) => rand.Next(this.Min, this.Max);
 
         public bool Equals(RandRange other) => this.Min == other.Min && this.Max == other.Max;

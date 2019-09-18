@@ -430,8 +430,6 @@ namespace RogueElements.Tests
 
             roomSpawner.Object.DistributeSpawns(mockMap.Object, mockSpawns.Object);
 
-
-
             roomSpawner.Verify(p => p.SpawnRandInCandRooms(mockMap.Object, It.Is<RandWeighted<RoomHallIndex>>(s => CompareLinkedDict(s, compare)), mockSpawns.Object, 100), Times.Exactly(1));
         }
 

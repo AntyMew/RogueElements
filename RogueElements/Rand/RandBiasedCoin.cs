@@ -85,22 +85,6 @@ namespace RogueElements
         public RandBiasedCoin<T> CopyState() => new RandBiasedCoin<T>(this);
 
         /// <summary>
-        /// Returns a collection that contains both possible items the <see cref="RandBiasedCoin{T}"/> can select.
-        /// </summary>
-        /// <returns>An <see cref="IEnumerator{T}"/> that can be used to iterate over the possible items.</returns>
-        public IEnumerator<T> GetEnumerator()
-        {
-            yield return this.first;
-            yield return this.second;
-        }
-
-        /// <summary>
-        /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        /// <returns>An <see cref="IEnumerator"/> object that can be used to iterate through the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
-
-        /// <summary>
         /// Instantiates a shallow copy of the <see cref="IRandPicker{T}"/>.
         /// </summary>
         /// <returns>A shallow copy of the <see cref="IRandPicker{T}"/>.</returns>

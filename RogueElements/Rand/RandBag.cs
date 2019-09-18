@@ -53,10 +53,6 @@ namespace RogueElements
 
         public IRandPicker<T> CopyState() => new RandBag<T>(this);
 
-        public IEnumerator<T> GetEnumerator() => this.ToSpawn.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
-
         public T Pick(IRandom rand)
         {
             int index = rand.Next(this.ToSpawn.Count);

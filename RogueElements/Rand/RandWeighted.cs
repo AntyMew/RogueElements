@@ -283,19 +283,13 @@ namespace RogueElements
         /// Returns an enumerator that iterates through a collection.
         /// </summary>
         /// <returns>An <see cref="IEnumerator"/> object that can be used to iterate through the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)this.items).GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => this.items.GetEnumerator();
 
         /// <summary>
         /// Instantiates a shallow copy of the <see cref="IRandPicker{T}"/>.
         /// </summary>
         /// <returns>A shallow copy of the <see cref="IRandPicker{T}"/>.</returns>
         IRandPicker<T> IRandPicker<T>.CopyState() => this.CopyState();
-
-        /// <summary>
-        /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        /// <returns>An <see cref="IEnumerator{T}"/> object that can be used to iterate through the collection.</returns>
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() => ((IEnumerable<T>)this.items.Values).GetEnumerator();
 
         // Vose's alias method algorithm
         // One-time setup: O(n) best/worst case time complexity

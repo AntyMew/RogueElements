@@ -13,7 +13,7 @@ namespace RogueElements
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Serializable]
-    public class LoopedRand<T> : IMultiRandPicker<T>
+    public class LoopedRand<T> : IRandPicker<IEnumerable<T>>
     {
         private readonly IRandPicker<T> spawner;
         private readonly IRandPicker<int> amountSpawner;
@@ -38,20 +38,17 @@ namespace RogueElements
 
         public bool CanPick => this.amountSpawner.CanPick;
 
-        public IMultiRandPicker<T> CopyState() => new LoopedRand<T>(this);
+        public IRandPicker<IEnumerable<T>> CopyState() => new LoopedRand<T>(this);
 
-        public List<T> Roll(IRandom rand)
+        public IEnumerable<T> Pick(IRandom rand)
         {
-            List<T> result = new List<T>();
             int amount = this.amountSpawner.Pick(rand);
             for (int ii = 0; ii < amount; ii++)
             {
                 if (!this.spawner.CanPick)
                     break;
-                result.Add(this.spawner.Pick(rand));
+                yield return this.spawner.Pick(rand);
             }
-
-            return result;
         }
     }
 }

@@ -4,6 +4,7 @@
 // </copyright>
 
 using System.Collections.Generic;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 
@@ -25,19 +26,10 @@ namespace RogueElements.Tests
             seq = seq.Returns(2);
             seq = seq.Returns(3);
             LoopedRand<int> looped = new LoopedRand<int>(valueRange, amountRange);
-            List<int> result = looped.Roll(testRand.Object);
+            List<int> result = looped.Pick(testRand.Object).ToList();
             List<int> compare = new List<int> { 0, 1, 2, 3 };
             Assert.That(result, Is.EquivalentTo(compare));
             testRand.Verify(p => p.Next(It.IsAny<int>(), It.IsAny<int>()), Times.Exactly(5));
-        }
-
-        [Test]
-        public void PresetMultiRand()
-        {
-            PresetMultiRand<int> testPicker = new PresetMultiRand<int>(5, 3, 1, 8);
-            Mock<IRandom> testRand = new Mock<IRandom>(MockBehavior.Strict);
-            List<int> compare = new List<int> { 5, 3, 1, 8 };
-            Assert.That(testPicker.Roll(testRand.Object), Is.EquivalentTo(compare));
         }
 
         [Test]
