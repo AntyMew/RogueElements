@@ -58,7 +58,11 @@ namespace RogueElements
             int index = rand.Next(this.ToSpawn.Count);
             T choice = this.ToSpawn[index];
             if (this.RemoveOnRoll)
-                this.ToSpawn.RemoveAt(index);
+            {
+                this.ToSpawn[index] = this.ToSpawn[this.ToSpawn.Count - 1];
+                this.ToSpawn.RemoveAt(this.ToSpawn.Count - 1);
+            }
+
             return choice;
         }
     }

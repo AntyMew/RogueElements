@@ -54,13 +54,13 @@ namespace RogueElements.Tests
             testRand.Setup(p => p.Next(2)).Returns(1);
             testRand.Setup(p => p.Next(1)).Returns(0);
             Assert.That(testPicker.Pick(testRand.Object), Is.EqualTo(3));
-            Assert.That(testPicker.Pick(testRand.Object), Is.EqualTo(7));
             Assert.That(testPicker.Pick(testRand.Object), Is.EqualTo(6));
-            Assert.That(testPicker.Pick(testRand.Object), Is.EqualTo(8));
-            Assert.That(testPicker.Pick(testRand.Object), Is.EqualTo(4));
             Assert.That(testPicker.Pick(testRand.Object), Is.EqualTo(1));
+            Assert.That(testPicker.Pick(testRand.Object), Is.EqualTo(8));
             Assert.That(testPicker.Pick(testRand.Object), Is.EqualTo(2));
+            Assert.That(testPicker.Pick(testRand.Object), Is.EqualTo(7));
             Assert.That(testPicker.Pick(testRand.Object), Is.EqualTo(5));
+            Assert.That(testPicker.Pick(testRand.Object), Is.EqualTo(4));
             testRand.Verify(p => p.Next(It.IsAny<int>()), Times.Exactly(8));
         }
 
